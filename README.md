@@ -35,7 +35,8 @@ commit this file
 first add to stage
 
 () $ git add test.txt
-() $ git rm --cached <filePath> //to unstage
+
+() $ git rm --cached '<filePath>' //to unstage
 
 note: you can add a directory, and it will add all the fils in that directory
       in your stage
@@ -48,12 +49,13 @@ then commit
 git may ask for who you are, just answer the questions
 
 () $ git config user.email 'your@email.com'
+
 () $ git config user.name 'your name'
 
 5)
 Create a new branch
 
-() $ git checkout -b <branch name>
+() $ git checkout -b '<branch name>'
 
 make sure to commit  changes in a branch before changing
 or it will show on both as something that you are working on for that
@@ -63,11 +65,12 @@ branch.
 push to Github
 
 () $ git remote add origin https://github.com/tichristian/<repository-name.git>
+
 () $ git push -u origin master
 
 then paste the other branch
 
-() $ git push -u origin <branch name>
+() $ git push -u origin '<branch name>'
 
 Then use github.com (or other git of your choice) to control, 
 to do merging and stuff
@@ -81,8 +84,9 @@ do a pull
 8)
 If you want to do merges locally
 
-() $ git checkout <master/any really>
-() $ git merge <branch that is going into other branch>
+() $ git checkout '<master/any really>'
+
+() $ git merge '<branch that is going into other branch>'
 
 if you conflict, you have to resolve manually,
 or use
