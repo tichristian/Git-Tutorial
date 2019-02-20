@@ -97,3 +97,9 @@ or use
 to see branches as a tree
 
 () $ git log --graph --all --format='%C(cyan dim) %p %Cred %h %C(white dim) %s %Cgreen(%cr)%C(cyan dim) <%an>%C(bold yellow)%d%Creset'
+
+10)
+to see difference in file
+
+() $ git diff {path to file}
+
