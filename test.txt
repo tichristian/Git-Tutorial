@@ -1,5 +1,0 @@
-hello world!
-made from master branch
-new commit, same master
-This is a new change in testing.
-
