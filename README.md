@@ -37,6 +37,8 @@ first add to stage
 () $ git add test.txt
 () $ git rm --cached <filePath> //to unstage
 
+note: you can add a directory, and it will add all the fils in that directory
+      in your stage
 
 then commit
 
