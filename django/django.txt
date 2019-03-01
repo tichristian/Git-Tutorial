@@ -252,6 +252,10 @@ to get rid of pesky quotes and stuff.
 # an example of a query.
 select store, sum(change), sum(case when kept_change = 1 then change else 0 end) from vtransactions group by store;
 
+>>> import json
+>>> from django.core.serializers.json import DjangoJSONEncoder
+>>> from django.db.models import Sum, Avg, Count, Q, Case, When, F
+
 >>> objVtrans = models.Vtransactions.objects.all()
 >>> objTrans = models.Transactions.objects.all()
 
