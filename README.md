@@ -103,3 +103,13 @@ to see difference in file
 
 () $ git diff {path to file}
 
+11)
+to remove a branch
+
+local branch
+
+() $ git branch -d the_local_branch
+
+remote branch
+
+() $ git push origin --delete the_remote_branch
