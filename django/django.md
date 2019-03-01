@@ -1,0 +1,255 @@
+#---------------------------------------------
+# Optional::
+
+# To deactivate vir. env.
+$ deactivate 
+
+# To check libraries install by pip
+# note: if you do it while not in vir. env. it will list everything install on machine
+#       if you do it while in vir. env. it will show everything installed for that env.
+$ pip freeze
+
+#---------------------------------------------
+
+
+
+# SETTING UP DJANGO
+
+# Go to the folder you wish to work in.
+# Create a virtual environment so that you can make sure what environment you are working with
+
+$ virtualenv venv -p python3.6 .
+
+# venv is a folder you are creating to put vir. env. in
+
+
+# Activate the env.
+
+$ source bin/activate
+
+# Install Django in that virtual environment using pip or pip3
+
+(venv) $ pip install django 
+
+#---------------------------------------------
+
+# CREATING A NEW DJANGO PROJECT
+
+# Create a 'src/' folder to put project in
+# cd in 'src/' and create the django porject
+
+(venv) $ django-admin startproject trydjango .
+
+# now you can use PyCharm.
+
+# Run the web app
+
+(venv) $ python3.6 manage.py runserver
+
+
+# Make sure you migrate your INSTALLED_APPS to your web app (especially if you add a new one)
+
+(venv) $ python3.6 manage.py migrate
+
+
+# Then we can create a super-user that has access to admin
+# Legend says, "This will work regardless of the database"
+
+(venv) python3.6 manage.py createsuperuser
+
+#---------------------------------------------
+
+# Messing with Web-App Database.
+
+# In Django project, it is used by apps INSTALLED_APP, we are going to create our own custom app.
+# Apps are good for storing data, or data manipulations
+# To delete an app, just delete the folder of the app created
+
+(venv) $ python3.6 manage.py startapp [app name]
+
+# In app 'products' we will create a class that will inherit from django 'models'
+# don't forget to add app in settings INSTALLED_APP
+
+class Product(models.Model):
+    title = models.TextField()
+    description = models.TextField()
+    price = models.TextField()
+
+# after adding app to INSTALLED_APP, make the migration and migrate the apps.
+# every time modules.py is changed, run these two commands
+(venv) $ python3.6 manage.py makemigrations
+(venv) $ python3.6 manage.py migrate
+
+# We register the module.
+# In admin.py, we import models library. 
+# This is called a relative import since they are in the same folder.
+>>> from .models import Product
+>>> admin.site.register(Product)
+
+# from there, you can create a new product in the Product module using the admin function of the website.
+
+#--
+
+# Create new Product using python in terminal
+# use thess command, built in in django
+(venv) $ python3.6 manage.py shell
+
+>>> from products.models import Product
+>>> Product.objects.all() #see all object in table
+>>> Product.objects.create(title='Second test product', description='another one', price='$125.00', summary='not default')
+
+#---------------------------------------------
+
+# CREATING A VIEW FOR PAGE
+
+# Create a new app, we will create one call pages, then add it to INSTALLED_APP.
+
+# Inside of views.py in pages folder is where you manage anything for pages.
+# See Views.py
+# Now, you import your views into your 'urls.py' see that file.
+
+>>> from pages.views import home_view, contact_view
+
+>>> urlpatterns = [
+>>>     path('home/', home_view, name='page home'),
+>>>     path('contact/', contact_view),
+>>>     path('admin/', admin.site.urls),
+>>> ]
+
+
+# returning a html file for a view.
+# in 'views.py' use the render shortcuts that areimported, to render an html doc/template
+# Create a folder (templates) in the src (root project folder) that will have the html files.
+>>> def home_view(request, *args, **kwargs):
+>>> 	return render(request, 'home.html', {})
+
+# Then tell django where template is. In settings, find the 'TEMPLATES' variable
+# in 'DIRS', add the path of the dictionary.
+
+>>>		'DIRS': [os.path.join(BASE_DIR, 'templates/')],
+
+# --
+# template inheritance
+# so you do not need to keep adding paths in
+>>>		'DIRS': [os.path.join(BASE_DIR, 'templates/')],
+
+# Create a 'base.html' (best practice) that will contains headers and footer
+# in the base file, create the headers and footers, then have an area where you want all the other
+# pages to render in.
+# The html for the other pages will be rendered in between  
+# {% block [area name] %} ... {% endblock [area name] %}
+
+<!doctype html>
+<html>
+<head>
+    <title>This is the head inherited by all pages</title>
+</head>
+<body>
+    <h1>This is a nav bar</h1>
+    {% block content %}
+        <!-- Replaces whatever comes in here-->
+        Replace Me
+    {% endblock content %}
+</body>
+</html>
+
+# In all the html page you want to render in between, put the same brackes
+
+-
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>About Page</h1>
+{% endblock content %}
+
+# Then every thing should work find
+-
+
+#--
+# 'Include' method
+# Allows you to include an external template into any template
+
+{% include 'path to external template' %}
+
+#--
+# Template context
+# essentially, we pass two things to the HTML file from 'views.py', request, and a context dictionary
+
+>>> def about_view(request, *args, **kwargs):
+>>>     my_context = {
+>>>         'my_text': 'This is about us',
+>>>         'my_number': 123
+>>>     }
+>>>     return render(request, 'about.html', my_context)
+
+#---------------------------------------------
+# Render data from database with a model
+
+# let's look in the product model
+# in terminal shell
+
+(venv) $ python3.6 manage.py shell
+>>> from products.models import Product
+>>> obj = Product.objects.get(id=1)
+>>> dir(obj) #shows all the methods we have on obj
+
+# Creating a views from a data,
+# open 'views.py' in 'products/' model. We are keeping the view for product with product.
+# instead of putting it with the other view.
+
+# in the 'views.py' for products/ we can simply do something similar
+>>> from .models import Product
+>>> def product_detail_view(request):
+>>>     obj = Product.objects.get(id=1)
+>>>     my_context = {
+>>>         'title': obj.title,
+>>>         'description': obj.description
+>>>     }
+>>>     return render(request, 'product/detail.html', my_context)
+
+#----------------------------------------------------------------
+# install Node.js to virtual env
+# We need to make sure Node.js is installed in the vir. env.
+
+# following: 
+# https://calvinx.com/2013/07/11/python-virtualenv-with-node-environment-via-nodeenv/
+
+# To do so:
+# 1. Activate your virtual environ
+# 2. run: $ pip install nodeenv
+# 3. run: $ nodeenv -p
+# 4. deactivate and reactivate your vir. env.
+# 5. test npm to see where package install, 
+#	$ npm install -g {packages name:: ex: yo}
+#    then you should see it install in the vir. env. directory
+#	look in venv/lib/nod_modules
+
+# install:
+$ npm install -g --save tui-chart
+$ npm install -g bootstrap
+
+#----------------------------------------------------------------
+# working with Queryset data from views.py to html.
+
+for legacy databases,
+Look up 'Integrating Django with legacy databases'
+
+
+when sending Queryset data from views.py to html, some manipulations are 
+necessary.
+
+>>> import json
+>>> from django.core.serializers.json import DjangoJSONEncoder
+
+>>> x = json.dumps(list(<queryset values>), cls=DjangoJSONEncoder)
+
+in html/javascript
+
+var json_data = {{x | safe}}
+
+to get rid of pesky quotes and stuff.
+
+# an example of a query.
+select store, sum(change), sum(case when kept_change = 1 then change else 0 end) from vtransactions group by store;
+
+
