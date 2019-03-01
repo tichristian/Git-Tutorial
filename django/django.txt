@@ -252,4 +252,49 @@ to get rid of pesky quotes and stuff.
 # an example of a query.
 select store, sum(change), sum(case when kept_change = 1 then change else 0 end) from vtransactions group by store;
 
+>>> objVtrans = models.Vtransactions.objects.all()
+>>> objTrans = models.Transactions.objects.all()
 
+>>>  changesum = objVtrans.aggregate(Sum('change'))
+>>>  changeavg = objVtrans.aggregate(Avg('change'))
+>>>  alls = json.dumps(list(objTrans.values()), cls=DjangoJSONEncoder)
+
+>>>  changebystore = objVtrans.values('store').annotate(tot_change=Sum('change'),
+>>>                                                    tot_kept_change=Sum(
+>>>                                                        Case(
+>>>                                                            When(
+>>>                                                                kept_change=True,
+>>>                                                                then=F('change')
+>>>                                                            ),
+>>>                                                            default=0
+>>>                                                        )
+>>>                                                    ),
+>>>                                                    tot_kept_count=Sum('kept_change'),
+>>>                                                    tot_transac=Count('kept_change'))
+
+>>>  # changebystore:
+>>>  # select store,
+>>>  #        sum(change),
+>>>  #        sum(case when kept_change = 1 then change end),
+>>>  #        sum(kept_change),
+>>>  #        count(kept_change)
+>>>  # from vtransactions group
+>>>  # by store;
+
+>>>  jsonchangebystore = json.dumps(list(changebystore), cls=DjangoJSONEncoder)
+
+>>>  context = {
+>>>     'sum_change': changesum,
+>>>     'avg_change': changeavg,
+>>>     'total_purchases_by_store': jsonchangebystore,
+>>>     'alls': alls,
+>>>     'store_cat': json.dumps(list(changebystore.values_list('store', flat=True)), cls=DjangoJSONEncoder),
+>>>     'series_change': json.dumps(list(changebystore.values_list('tot_change', flat=True)), cls=DjangoJSONEncoder),
+>>>     'series_kept_change': json.dumps(list(changebystore.values_list('tot_kept_change', flat=True)),
+>>>                                      cls=DjangoJSONEncoder),
+>>>     'series_sum_kept': json.dumps(list(changebystore.values_list('tot_kept_count', flat=True)),
+>>>                                   cls=DjangoJSONEncoder),
+>>>     'series_changes_avail': json.dumps(list(changebystore.values_list('tot_transac', flat=True)),
+>>>                                        cls=DjangoJSONEncoder)
+>>>  }
+>>>  return render(request, 'home.html', context)
