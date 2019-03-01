@@ -229,7 +229,7 @@ $ npm install -g --save tui-chart
 $ npm install -g bootstrap
 
 #----------------------------------------------------------------
-# working with Queryset data from views.py to html.
+# working with ORM Queryset data from views.py to html.
 
 for legacy databases,
 Look up 'Integrating Django with legacy databases'
