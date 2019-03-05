@@ -113,3 +113,14 @@ local branch
 remote branch
 
 () $ git push origin --delete the_remote_branch
+
+12)
+to clone a git to work with
+
+() $ git clone {path of remote git}
+
+it will only show master, to see all other branchesn (hidden)
+
+() $ git branch -a
+
+then you can checkout the branch you wanted, and work from there.
