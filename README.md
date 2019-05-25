@@ -30,6 +30,11 @@ create a test file
 () $ nano test.txt
 
 4)
+
+() $ git status
+
+show which files that has not been stage or committed
+
 commit this file
 
 first add to stage
