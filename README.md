@@ -65,12 +65,12 @@ to add files and folders to ignore, in the directory of your git repository (sam
 nano into that file, and enter the names of files and dirs you want to ignore
 example:
 
-# Ignore these directories
+'# Ignore these directories
 directory_name/
 
-# Ignore these files
+'# Ignore these files
 filename
-*.file extention (for multiple files)
+'*.file extention (for multiple files)
 
 5)
 Create a new branch
