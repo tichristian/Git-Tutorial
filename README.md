@@ -31,9 +31,9 @@ create a test file
 
 4)
 
-() $ git status
-
 show which files that has not been stage or committed
+
+() $ git status
 
 commit this file
 
@@ -56,6 +56,21 @@ git may ask for who you are, just answer the questions
 () $ git config user.email 'your@email.com'
 
 () $ git config user.name 'your name'
+
+4.2)
+to add files and folders to ignore, in the directory of your git repository (same directory as where the .git is), create a local .gitignore file
+
+() $ touch .gitignore
+
+nano into that file, and enter the names of files and dirs you want to ignore
+example:
+
+# Ignore these directories
+directory_name/
+
+# Ignore these files
+filename
+*.file extention (for multiple files)
 
 5)
 Create a new branch
