@@ -138,12 +138,19 @@ remote branch
 () $ git push origin --delete the_remote_branch
 
 12)
-to clone a git to work with
+to clone a git to work with. Do this when you want to work with branches from a remote repository.
 
 () $ git clone {path of remote git}
 
-it will only show master, to see all other branchesn (hidden)
+it will only show master, to see all other branches (remotes are hidden)
 
 () $ git branch -a
 
-then you can checkout the branch you wanted, and work from there.
+If you want to make a local branch that will track a remote branch, 
+
+() $ git branch -t my_local_branch origin/remote_branch
+() $ git checkout my_local_branch
+
+Do your work, and then simply push it directly to remote branch. That way all merge can be done in repository.
+
+() $ git push
