@@ -146,6 +146,10 @@ it will only show master, to see all other branches (remotes are hidden)
 
 () $ git branch -a
 
+To see what branch is tracking
+
+() $ git branch -vv
+
 If you want to make a local branch that will track a remote branch, 
 
 () $ git branch -t my_local_branch origin/remote_branch
